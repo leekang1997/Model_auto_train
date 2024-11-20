@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="C:\Users\L\anaconda3" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.11.0 (sftp://likang@115.25.41.35:22/home/likang/anaconda3/envs/llama/bin/python3.11)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="LLAMA_A40" project-jdk-type="Python SDK" />
 </project>
