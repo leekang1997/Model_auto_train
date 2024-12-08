@@ -1,11 +1,11 @@
 from openai import OpenAI
-from . import Data_info
+#import Data_info
 #Qwen2-14B-Instruct
 
 def chat_BigModel(message, history,model_info):
     """调用大模型并返回响应"""
     client = OpenAI(
-        base_url=Data_info.client(model_info),
+        base_url='http://localhost:8009/v1',
         api_key='ollama',  # required, but unused
     )
 
@@ -28,7 +28,7 @@ def chat_BigModel(message, history,model_info):
     return response.choices[0].message.content
 
 
-#print(chat_BigModel('C620-1型普通车床故障分析的目的是什么?', '','Qwen2-14B-Instruct'))
+print(chat_BigModel(' {时间}:2022-12-19 00:00:00+08:00 指标：给矿量瞬时值设定:350.000', '','Qwen2-0.5B-Instruct'))
 '''
 # 示例调用
 history = []  # 这里应该是历史对话记录的列表

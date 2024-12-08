@@ -51,6 +51,8 @@ num_train_epochs: {num_epochs}
         yaml_file.write(content)
     print(f"YAML 文件已生成：{output_path}")
 
+
+# 运行训练并记录日志
 # 运行训练并记录日志
 def run_training_with_logging(yaml_path, gpu_devices="4,5,6,7"):
     log_file_path = f"train_log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
@@ -58,25 +60,34 @@ def run_training_with_logging(yaml_path, gpu_devices="4,5,6,7"):
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = gpu_devices  # 设置可用 GPU
     activate_and_run = (
-        f"source /home/likang/anaconda3/bin/activate llama && llamafactory-cli train {yaml_path}"
+        f"source /home/likang/anaconda3/bin/activate llama && "
+        f"llamafactory-cli train {yaml_path}"
     )
     try:
-        with open(log_file_path, "w") as log_file:
-            print(f"切换到目录 {factory_dir} 并开始运行训练任务...")
-            process = subprocess.Popen(
-                activate_and_run,
-                shell=True,
-                cwd=factory_dir,
-                stdout=log_file,
-                stderr=subprocess.STDOUT,
-                executable="/bin/bash",
-                env=env
-            )
-            process.communicate()
-            if process.returncode == 0:
-                print(f"训练任务完成，日志已保存到 {log_file_path}")
-            else:
-                print(f"训练任务失败，请检查日志文件：{log_file_path}")
+        print(f"切换到目录 {factory_dir} 并开始运行训练任务...")
+        # 修改：使用 tee 命令将输出同时发送到日志文件和终端
+        process = subprocess.Popen(
+            f"{activate_and_run} | tee {log_file_path}",
+            shell=True,
+            cwd=factory_dir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            executable="/bin/bash",
+            env=env,
+            text=True  # 确保输出是以文本形式处理
+        )
+
+        # 实时打印输出到控制台
+        for line in iter(process.stdout.readline, ''):
+            print(line, end='')
+
+        process.stdout.close()  # 关闭stdout以避免死锁
+        process.wait()  # 等待进程结束
+
+        if process.returncode == 0:
+            print(f"训练任务完成，日志已保存到 {log_file_path}")
+        else:
+            print(f"训练任务失败，请检查日志文件：{log_file_path}")
     except Exception as e:
         print(f"运行训练任务时发生错误: {e}")
 
@@ -84,14 +95,14 @@ def run_training_with_logging(yaml_path, gpu_devices="4,5,6,7"):
 if __name__ == "__main__":
     # 用户可配置的参数
     dataset_info_path = "/home/likang/LLaMA-Factory/data/dataset_info.json"
-    dataset_file_path = "/home/likang/angang_data_contronak/DataContronal/2024-12-1-eam_shockwave_divided/step1_each/管控一体化1/training_data_20241206_092350.json"
-    #model_path = "/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-0___5B-Instruct/"
-    model_path="/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-3B/"
+    dataset_file_path = "/home/likang/angang_data_contronak/DataContronal/2024-12-1-eam_shockwave_divided/step1_each/training_data_20241206_095424_train.json"
+    model_path = "/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-0___5B-Instruct/"
+    #model_path="/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-3B/"
     #model_path="/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-7B/"
     save_dir = "/home/extra_space/likang_model/"
     yaml_dir = "/home/likang/LLaMA-Factory/examples/train_lora"
     cutoff_len = 10000  # 最大输入长度
-    gpu_devices = "0,1,2,3,4,5,6,7"  # 可用 GPU
+    gpu_devices = "4,5,6,7"  # 可用 GPU
 
     # 数据集名称和配置
     dataset_name = "2024-12-6-angang_first_govern_data_2022701_20230131"
