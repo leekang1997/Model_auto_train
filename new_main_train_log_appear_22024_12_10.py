@@ -95,18 +95,17 @@ def run_training_with_logging(yaml_path, gpu_devices="4,5,6,7"):
 if __name__ == "__main__":
     # 用户可配置的参数
     dataset_info_path = "/home/likang/LLaMA-Factory/data/dataset_info.json"
-    dataset_file_path = "/home/likang/angang_data_contronak/DataContronal/2024-12-1-eam_shockwave_divided/step1_each_make_json/training_data_20241213_114057_train.json"
+    dataset_file_path = "/home/likang/angang_data_contronak/DataContronal/2024-12-1-eam_shockwave_divided/step1_each_make_json/govern_diff_20241210_225041_train.json"
     model_path = "/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-0___5B-Instruct/"
     #model_path="/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-3B/"
     #model_path="/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-7B/"
-    save_dir = "/home/extra_space/likang_model/equip_2024_12_10/"
+    save_dir = "/home/extra_space/likang_model/govern_diff/"
     yaml_dir = "/home/likang/LLaMA-Factory/examples/train_lora"
     cutoff_len = 15000  # 最大输入长度
-    gpu_devices = "4,5,6,7"  # 可用 GPU
+    gpu_devices = "0,1,2,3"  # 可用 GPU
 
-    # 数据集名称和配置
-    #必须修改
-    dataset_name = "2024-12-13-angang_equipment"
+    # 数据集名称和配置 必须改
+    dataset_name = "2024-12-10-angang_govern_diff"
     new_dataset = {
         dataset_name: {
             "file_name": dataset_file_path,

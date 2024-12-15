@@ -94,8 +94,8 @@ def export_lora_model(merge_yaml_path):
 if __name__ == "__main__":
     # 配置路径
     model_path = "/home/likang/.cache/modelscope/hub/Qwen/Qwen2___5-0___5B-Instruct/"
-    adapter_path = "/home/extra_space/likang_model/2024-12-6-angang_first_govern_data_2022701_20230131/"
-    export_dir = "/home/extra_space/likang_model/2024-12-6-angang_first_govern_data_2022701_20230131_export_tes/"
+    adapter_path = "/home/extra_space/likang_model/equip_2024_12_10/2024-12-13-angang_equipment/"
+    export_dir = "/home/extra_space/likang_model/govern_divide_tes_train_2024_12_13/"
 
     # 生成导出 YAML 配置文件路径
     export_yaml_path = f"/home/likang/LLaMA-Factory/examples/merge_lora/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_merge_lora.yaml"

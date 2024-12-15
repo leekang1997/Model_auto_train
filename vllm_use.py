@@ -17,6 +17,7 @@ def start_vllm_server(model_path, model_name, port=8009, gpu_devices="4"):
         f"python3 -m vllm.entrypoints.openai.api_server "
         f"--model {model_path} "
         f"--served-model-name {model_name} "
+        f"--gpu_memory_utilization 0.1"
         f"--trust-remote-code "
         f"--port {port}"
     )
